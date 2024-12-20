@@ -70,6 +70,7 @@ const Register = () => {
 
       console.log("Saving to Firestore...");
       // Save the document to Firestore
+      // Save the document to Firestore
       const patientRef = doc(queueCollection, id);
       await setDoc(patientRef, {
         employeeID: id,
@@ -80,12 +81,15 @@ const Register = () => {
         timestamp: Timestamp.now(),
       });
 
-      // Log success and reset form
+      // Save employeeID to localStorage
+      localStorage.setItem("employeeID", id);
+
       alert(`Your queue number is ${queueNumber}`);
       setId("");
       setName("");
       setEmail("");
       navigate("/queue-status");
+
     } catch (error) {
       // Log error details for debugging
       console.error("Error registering user:", error);

@@ -10,13 +10,14 @@ const QueueStatus = () => {
   useEffect(() => {
     const fetchQueueNumber = async () => {
       try {
-        const userID = localStorage.getItem("employeeID"); // Retrieve user ID stored during registration
+        const userID = localStorage.getItem("employeeID");
+        console.log("Fetched Employee ID:", userID);
         if (!userID) throw new Error("User not registered!");
-
+  
         const queueRef = collection(db, "queue");
         const q = query(queueRef, where("employeeID", "==", userID));
         const querySnapshot = await getDocs(q);
-
+  
         if (!querySnapshot.empty) {
           const userData = querySnapshot.docs[0].data();
           setQueueNumber(userData.queueNumber);
@@ -30,24 +31,22 @@ const QueueStatus = () => {
         setLoading(false);
       }
     };
-
+  
     fetchQueueNumber();
   }, []);
+  
 
   return (
-    <div className="queue-page">
-      <div className="queue-container">
-        <img src="/src/SKP-logo.jpg" alt="SKP Logo" className="queue-logo" />
-        <h2>Your Ticket Number is</h2>
+    <div className="queue-status-page">
+      <div className="queue-status-container">
+        <h1>Your Ticket Number is</h1>
         {loading ? (
           <p>Loading your ticket...</p>
         ) : (
-          <div className="queue-number">{queueNumber}</div>
+          <div className="current-serving-card">{queueNumber}</div>
         )}
-        <p className="queue-message">
-          Thank you for visiting our clinic <br />
-          Stay safe, stay healthy
-        </p>
+        <p>Thank you for visiting our clinic</p>
+        <p>Stay safe, stay healthy</p>
       </div>
     </div>
   );

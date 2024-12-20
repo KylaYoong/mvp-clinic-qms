@@ -17,26 +17,14 @@
   text-align: center;
 }
 
-/* Header */
-.queue-status-page .header {
-  width: 100%;
-  padding: 20px 0;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.queue-status-page .logo {
-  height: 60px;
-  width: auto;
-}
-
-/* Container for ticket number */
+/* Ticket container */
 .queue-status-container {
   max-width: 400px;
   background-color: #ffffff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 /* Title */
@@ -58,15 +46,9 @@
   margin-bottom: 20px;
 }
 
-/* Paragraph below the ticket number */
-.current-serving-card p {
-  margin-top: 10px;
-  font-size: 16px;
-  color: #e9e9e9;
-}
-
-/* Loading message */
+/* Message below the ticket number */
 .queue-status-container p {
-  font-size: 18px;
+  font-size: 16px;
   color: #666;
+  margin-top: 10px;
 }
