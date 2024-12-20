@@ -14,88 +14,89 @@ import "./Register.css";
 // Define the Register functional component
 const Register = () => {
   // State variables to hold the employee ID and name input values
-  const [id, setId] = useState("");    // Holds Employee ID
+  const [id, setId] = useState(""); // Holds Employee ID
   const [name, setName] = useState(""); // Holds Full Name
   const [email, setEmail] = useState(""); // New email state
-  
+
   // Hook to programmatically navigate to a different route
   const navigate = useNavigate();
 
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-   // Log the values of the form fields before validation
-  console.log("Form values:", { id, name, email });
-  
-  // Validate Employee ID
-  if (!id.match(/^\d{6}$/)) {
-    alert("Employee ID must be exactly 6 digits!");
-    return;
-  }
-  
-  // Validate Full Name
-  if (!name.match(/^[a-zA-Z ]+$/)) {
-    alert("Name must contain only letters and spaces!");
-    return;
-  }
 
-  try {
-    // Log before attempting to fetch the queue data
-    console.log("Fetching queue data...");
-    const queueCollection = collection(db, "queue");
-    const queueSnapshot = await getDocs(queueCollection);
-    
-    // Log the retrieved queue data
-    const queueNumbers = queueSnapshot.docs.map(doc => {
-      console.log("Queue Number data:", doc.data());
-      return parseInt(doc.data().queueNumber.replace('D', ''), 10);
-    });
-    
-    // Generate the next queue number
-    const nextQueueNumber = Math.max(0, ...queueNumbers) + 1;
-    const queueNumber = `D${String(nextQueueNumber).padStart(4, "0")}`;
-    
-    // Log the generated queue number
-    console.log("Generated Queue Number:", queueNumber);
-    
-    // Save the document to Firestore
-    const patientRef = doc(queueCollection, id);
-    console.log("Saving to Firestore with data:", {
-      employeeID: id,
-      name: name,
-      email: email || null,
-      queueNumber: queueNumber,
-      status: "waiting",
-      timestamp: Timestamp.now(),
-    });
-    
-    await setDoc(patientRef, {
-      employeeID: id,
-      name: name,
-      email: email || null,
-      queueNumber: queueNumber,
-      status: "waiting",
-      timestamp: Timestamp.now(),
-    });
-    
-    // Log success and reset form
-    alert(`Your queue number is ${queueNumber}`);
-    setId("");
-    setName("");
-    setEmail("");
-    navigate("/queue-status");
-  } catch (error) {
-    // Log error details for debugging
-    console.error("Error registering user:", error);
-    alert("Error: Unable to register. Please try again.");
-  }
-};
-  
+    // Log the values of the form fields before validation
+    console.log("Form values:", { id, name, email });
+
+    // Validate Employee ID
+    if (!id.match(/^\d{6}$/)) {
+      alert("Employee ID must be exactly 6 digits!");
+      return;
+    }
+
+    // Validate Full Name
+    if (!name.match(/^[a-zA-Z ]+$/)) {
+      alert("Name must contain only letters and spaces!");
+      return;
+    }
+
+    console.log("Validation passed");
+
+    try {
+      // Log before attempting to fetch the queue data
+      console.log("Fetching queue data...");
+      const queueCollection = collection(db, "queue");
+      const queueSnapshot = await getDocs(queueCollection);
+
+      console.log("Queue data fetched successfully.");
+
+      // Process the queue numbers safely
+      const queueNumbers = queueSnapshot.docs.map((doc) => {
+        const data = doc.data();
+        if (data.queueNumber) {
+          return parseInt(data.queueNumber.replace("D", ""), 10);
+        } else {
+          console.warn("Missing queueNumber in document:", doc.id);
+          return 0; // Default value if queueNumber is missing
+        }
+      });
+
+      // Generate the next queue number
+      const nextQueueNumber = Math.max(0, ...queueNumbers) + 1;
+      const queueNumber = `D${String(nextQueueNumber).padStart(4, "0")}`;
+
+      // Log the generated queue number
+      console.log("Generated Queue Number:", queueNumber);
+
+      console.log("Saving to Firestore...");
+      // Save the document to Firestore
+      const patientRef = doc(queueCollection, id);
+      await setDoc(patientRef, {
+        employeeID: id,
+        name: name,
+        email: email || null,
+        queueNumber: queueNumber,
+        status: "waiting",
+        timestamp: Timestamp.now(),
+      });
+
+      // Log success and reset form
+      alert(`Your queue number is ${queueNumber}`);
+      setId("");
+      setName("");
+      setEmail("");
+      navigate("/queue-status");
+    } catch (error) {
+      // Log error details for debugging
+      console.error("Error registering user:", error);
+      alert("Error: Unable to register. Please try again.");
+    }
+  };
 
   // JSX: Render the registration form UI
   return (
-    <div className="register-page"> {/* Main wrapper */}
+    <div className="register-page">
+      {/* Main wrapper */}
       <div className="overall">
         {/* Logo Section */}
         <div className="logo-group">
@@ -108,7 +109,7 @@ const Register = () => {
         <div className="content">
           <div className="container">
             <h2>Register</h2>
-            <form onSubmit={handleSubmit}> {/* Form submission triggers handleSubmit */}
+            <form onSubmit={handleSubmit}>
               {/* Employee ID Field */}
               <div className="form-group">
                 <label htmlFor="id">Employee ID</label>
@@ -117,7 +118,7 @@ const Register = () => {
                   id="id"
                   name="id"
                   value={id}
-                  onChange={(e) => setId(e.target.value)} // Updates 'id' state on change
+                  onChange={(e) => setId(e.target.value)}
                   required
                 />
               </div>
@@ -130,7 +131,7 @@ const Register = () => {
                   id="name"
                   name="name"
                   value={name}
-                  onChange={(e) => setName(e.target.value)} // Updates 'name' state on change
+                  onChange={(e) => setName(e.target.value)}
                   required
                 />
               </div>

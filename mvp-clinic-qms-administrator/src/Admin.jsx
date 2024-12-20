@@ -10,6 +10,7 @@ import {
   setDoc,
   onSnapshot,
   Timestamp,
+  getDocs,
 } from "firebase/firestore";
 import "./Admin.css";
 import SKPLogo from "./SKP-logo.jpg";
@@ -17,6 +18,7 @@ import SKPLogo from "./SKP-logo.jpg";
 function Admin() {
   const [empID, setEmpID] = useState("");
   const [empName, setEmpName] = useState("");
+  const [empEmail, setEmpEmail] = useState(""); // New state for email
   const [loading, setLoading] = useState(false);
   const [patients, setPatients] = useState([]);
 
@@ -71,37 +73,55 @@ function Admin() {
 
   const handleRegisterPatient = async (e) => {
     e.preventDefault();
-
+  
     if (!empID.match(/^\d{6}$/)) {
       alert("Employee ID must be exactly 6 digits!");
       return;
     }
-
+  
     if (!empName.match(/^[a-zA-Z ]+$/)) {
       alert("Employee name must contain only letters and spaces!");
       return;
     }
-
+  
     setLoading(true);
     try {
-      const patientRef = doc(collection(db, "queue"), empID);
+      const queueCollection = collection(db, "queue");
+      const queueSnapshot = await getDocs(queueCollection);
+  
+      // Safely map queue numbers
+      const queueNumbers = queueSnapshot.docs
+        .map((doc) => doc.data().queueNumber)
+        .filter((queueNumber) => queueNumber !== undefined) // Filter out undefined values
+        .map((queueNumber) =>
+          parseInt(queueNumber.replace("D", ""), 10)
+        );
+  
+      const nextQueueNumber = Math.max(0, ...queueNumbers) + 1;
+      const queueNumber = `D${String(nextQueueNumber).padStart(4, "0")}`;
+  
+      // Save the patient document
+      const patientRef = doc(queueCollection, empID);
       await setDoc(patientRef, {
         employeeID: empID,
         name: empName,
+        email: empEmail || null, // Handle optional email properly
+        queueNumber: queueNumber,
         status: "waiting",
         timestamp: Timestamp.now(),
       });
-
-      alert("Patient registered successfully!");
+  
+      alert(`Patient registered successfully! Queue number: ${queueNumber}`);
       setEmpID("");
       setEmpName("");
+      setEmpEmail("");
     } catch (error) {
       alert(`Error: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
-
+  
   return (
     <div className="admin-container">
       <div className="header">
@@ -126,6 +146,12 @@ function Admin() {
             value={empName}
             onChange={(e) => setEmpName(e.target.value)}
             required
+          />
+          <input
+            type="email"
+            placeholder="Enter Employee Email"
+            value={empEmail}
+            onChange={(e) => setEmpEmail(e.target.value)} // Email field
           />
           <button type="submit" disabled={loading}>
             {loading ? "Registering..." : "Register New Patient"}
