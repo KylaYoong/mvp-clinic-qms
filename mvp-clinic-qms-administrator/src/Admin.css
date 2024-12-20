@@ -1,0 +1,88 @@
+/* Header Section */
+/* Styles the fixed header containing the logo and title */
+.header {
+  position: fixed; /* Fixes the header at the top */
+  top: 0;
+  left: 0;
+  width: 100%; /* Full page width */
+  display: flex; /* Flexbox for alignment */
+  align-items: center; /* Vertically center content */
+  justify-content: space-between; /* Space logo and title apart */
+  padding: 10px 20px; /* Spacing inside the header */
+  background-color: #ffffff; /* Dark background for contrast */
+  color: #ffffff;
+  z-index: 1000; /* Ensure it stays on top */
+}
+
+.logo {
+  height: 60px !important;
+  width: 200px !important;
+  max-height: 100%;
+}
+
+.header-title {
+  font-size: 1.5rem; /* Adjust size */
+  font-weight: bold;
+  color: #000000;  
+  /* color: #ffffff; */
+  margin: 0;
+  flex-shrink: 0; /* Prevent text from being cut off */
+  white-space: nowrap; /* Ensure text doesn't wrap */
+  padding-right: 40px; /* Add padding to prevent clipping */
+}
+
+/* Admin Interface Section */
+/* Styles the interface container for buttons and forms */
+.admin-interface {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  text-align: center; /* Align all text centrally */
+  width: 100%;
+  max-width: 400px; /* Limit maximum width */
+  margin-top: 80px; /* Space below fixed header */
+  padding: 20px;
+  background-color: #444444; /* Dark gray background for contrast */
+  border-radius: 10px; /* Smooth corners */
+  color: white; /* Text color for readability */
+}
+
+.title
+  .admin-interface h1,
+  .admin-interface h2 {
+    justify-content: center;
+    margin: 0 0 20px;
+  }
+  
+/* Styles the registration form */
+.register-form {
+  margin-top: 20px; /* Space above the form */
+  display: flex;
+  flex-direction: column; /* Stack input fields vertically */
+  gap: 15px; /* Space between form fields */
+}
+
+.register-form input {
+  padding: 10px; /* Add internal spacing */
+  font-size: 16px; /* Adjust font size for readability */
+  border-radius: 5px; /* Rounded corners */
+  border: 1px solid #ccc; /* Light gray border */
+}
+  
+/* Styles the submit button in the form */
+.register-form button {
+  padding: 10px; /* Internal spacing */
+  font-size: 16px; /* Font size */
+  background-color: #007bff; /* Primary blue background */
+  color: white; /* White text color */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Change cursor on hover */
+  /* transition: background-color 0.3s ease; Smooth hover effect */
+}
+  
+  .register-form button:hover {
+    background-color: #0056b3; /* Darker blue background on hover */
+  }
+  
