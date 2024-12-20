@@ -1,88 +1,74 @@
 /* General Layout */
-.body {
+.doctor-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background-color: #333; /* Background for the doctor interface */
-  color: white; /* Ensure readability */
-  margin: 0;
-  padding: 0;
-  margin-bottom: 10px;
+  height: 100vh;
+  background-color: #f4f4f4;
+  width: 1000px; /* Set a fixed width for the container */
+  margin-top: 100px;
 }
 
 .header {
-  position: fixed; /* Ensure the logo remains at the top-left, even when scrolling */
+  background-color: #333;
+  padding: 20px;
+  color: white;
+  text-align: center;
+  position: sticky;
   top: 0;
-  left: 0;
-  padding: 10px;
-  z-index: 1000; /* Ensure it stays on top of other elements */
-  background-color: black; /* Optional: Add background to the logo area */
 }
 
-.header .title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
-  margin: 0;
-  text-align: right; /* Align to the right */
+.header .logo {
+  height: 50px;
+  width: auto;
 }
 
-.logo {
-  height: 60px !important;
-  width: 200px !important;
-  max-height: 100%;
+.header .header-title {
+  margin: 10px 0;
+  color: black;
 }
 
-/* Add space for header and buttons */
+/* Patient Table */
 .patients-section {
-  margin-top: 1px; /* Adjust to create space for the header and buttons */
-  padding: 5px 20px;
-  overflow-y: auto; /* Allow scrolling for long patient lists */
-  height: calc(100vh - 200px); /* Prevent overflow and allow room for buttons */
+  padding: 20px;
+  overflow-y: auto;
+  flex-grow: 1;
 }
 
-
-/* Patient List */
-.patient-list {
-  margin: 0px auto;
-  width: 80%;
-  list-style: none;
-  color: #28a745; /* Green text for patient names */
+.patient-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
 }
 
-.patient-list li {
-  font-size: 16px;
-  margin: 5px 0;
-}
-
-/* Buttons */
-button {
+.patient-table th,
+.patient-table td {
   padding: 10px;
-  font-size: 16px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.patient-table th {
+  background-color: #333;
+  color: white;
+}
+
+.patient-table td {
+  color: black; /* Ensure the font is black and visible */
+}
+
+.patient-table button {
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 5px;
+  padding: 5px 10px;
   cursor: pointer;
 }
 
-button:hover {
-  background-color: #007bff;
+.patient-table button:hover {
+  background-color: #0056b3;
 }
 
-.patient-name {
-  background: none;
-  color: #28a745;
-  border: none;
-  cursor: pointer;
-  text-decoration: underline;
-  font-size: 16px;
-}
-
-.patient-name:hover {
-  color: #218838;
-}
-
+/* Popup */
 .popup {
   position: fixed;
   top: 0;
@@ -91,120 +77,41 @@ button:hover {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   display: flex;
-  align-items: center;
   justify-content: center;
-  z-index: 1000;
-}
-
-.popup-content h3 {
-  font-size: 24px; /* Adjust the size as needed */
-  font-weight: bold;
-  color: #ffffff; /* Ensures it stays white for dark backgrounds */
-  margin-bottom: 15px; /* Adds spacing below the heading */
+  align-items: center;
 }
 
 .popup-content {
-  background: #333;
-  padding: 20px;
+  background-color: white;
+  padding: 30px;
   border-radius: 10px;
-  color: white;
   width: 90%;
-  max-width: 500px;
+  max-width: 600px;
+  color: black
+}
+
+.save-button,
+.mark-completed-button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.save-button:hover,
+.mark-completed-button:hover {
+  background-color: #218838;
 }
 
 .close-popup {
-  margin-top: 10px;
-  padding: 10px;
-  font-size: 16px;
   background-color: #dc3545;
   color: white;
-  border: none;
-  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
   cursor: pointer;
 }
 
 .close-popup:hover {
   background-color: #c82333;
 }
-
-.mark-completed {
-  margin-top: 10px;
-  padding: 10px;
-  font-size: 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-left: 10px;
-}
-
-.mark-completed:hover {
-  background-color: #0056b3;
-}
-
-/* Dropdown Menu Styling */
-select {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  color: white;
-  background-color: #333; /* Matches the dark theme of the interface */
-  border: 1px solid #555; /* Subtle border for the dropdown */
-  border-radius: 5px; /* Rounded corners */
-  margin-bottom: 15px;
-  appearance: none; /* Removes default OS-specific arrow for a consistent look */
-}
-
-select:focus {
-  border-color: #007bff; /* Highlighted border on focus */
-  outline: none; /* Removes default outline */
-}
-
-option {
-  background-color: #333; /* Matches dropdown background */
-  color: white; /* Ensures readability in dark theme */
-}
-
-option:hover {
-  background-color: #555; /* Slightly lighter on hover */
-}
-
-/* Save button (red color) */
-.save-button {
-  background-color: #dc3545; /* Red color */
-  color: white;
-}
-
-.save-button:hover {
-  background-color: #c82333; /* Darker red on hover */
-}
-
-/* Mark as Completed button (blue color) */
-.mark-completed-button {
-  background-color: #007bff; /* Blue color */
-  color: white;
-}
-
-.mark-completed-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-}
-
-
-/* 2. Medical notes colour frame border */
-.notes-section {
-  border: 2px solid #007bff; /* Blue border */
-  border-radius: 10px;       /* Rounded corners */
-  padding: 20px;             /* Internal spacing */
-  margin: 20px auto;         /* External spacing, center align */
-  width: 80%;                /* Set the width */
-  background-color: #ffffff; /* White background */
-  color: #000000;            /* Black text */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow for a subtle effect */
-}
-
-.notes-section h3 {
-  color: #000000; /* Blue heading */
-  font-weight: bold;
-}
-

@@ -1,54 +1,4 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-.header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  padding: 10px;
-  z-index: 1000;
-  background-color: #ffffff; /* Optional */
-}
-
-.logo {
-  width: 250px; /* Adjust as needed */
-  height: auto;
-}
-
+/* Default button styles removed */
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -56,23 +6,19 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #4CAF50;
+  /* background-color: #4CAF50; Removed default background color */
   cursor: pointer;
   transition: border-color 0.25s;
-  border: 1px solid #000000; /* Light gray border */
-  z-index: 999; /* Ensure it stays above content */
-  
+  /* border: 1px solid #000000; /* Light gray border */
 }
 
-button:hover {
-  border-color: #646cff;
-}
 
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* Styles specific to light mode */
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -81,41 +27,6 @@ button:focus-visible {
   a:hover {
     color: #747bff;
   }
-  button {
-    background-color: #f9f9f9;
-  }
-}
 
 
-/* App container */
-.app-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* Sticky Switch Buttons */
-.switch-buttons {
-  position: sticky;
-  top: 60px; /* Place it just below the header (adjust as needed) */
-  background-color: #ffffff; /* Match header background */
-  z-index: 999;
-  padding: 10px 0;
-  text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add subtle shadow for separation */
-}
-
-.switch-buttons button {
-  padding: 10px 20px;
-  margin: 0 10px;
-  font-size: 1rem;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.switch-buttons button:hover {
-  background-color: #218838;
 }

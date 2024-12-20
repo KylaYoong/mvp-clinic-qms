@@ -25,45 +25,72 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    if (!id.match(/^\d{6}$/)) {
-      alert("Employee ID must be exactly 6 digits!");
-      return;
-    }
-    if (!name.match(/^[a-zA-Z ]+$/)) {
-      alert("Name must contain only letters and spaces!");
-      return;
-    }
+   // Log the values of the form fields before validation
+  console.log("Form values:", { id, name, email });
   
-    try {
-      // Generate the next queue number
-      const queueCollection = collection(db, "queue");
-      const queueSnapshot = await getDocs(queueCollection);
-      const queueNumbers = queueSnapshot.docs.map(doc => parseInt(doc.data().queueNumber.replace('D', ''), 10));
-      const nextQueueNumber = Math.max(0, ...queueNumbers) + 1;
-      const queueNumber = `D${String(nextQueueNumber).padStart(4, "0")}`;
-      
+  // Validate Employee ID
+  if (!id.match(/^\d{6}$/)) {
+    alert("Employee ID must be exactly 6 digits!");
+    return;
+  }
   
-      // Save the document
-      const patientRef = doc(queueCollection, id);
-      await setDoc(patientRef, {
-        employeeID: id,
-        name: name,
-        email: email || null,
-        queueNumber: queueNumber, // Save queue number
-        status: "waiting",
-        timestamp: Timestamp.now(),
-      });
-  
-      alert(`Your queue number is ${queueNumber}`);
-      setId("");
-      setName("");
-      setEmail("");
-      navigate("/queue-status");
-    } catch (error) {
-      console.error("Error registering user:", error);
-      alert("Error: Unable to register. Please try again.");
-    }
-  };
+  // Validate Full Name
+  if (!name.match(/^[a-zA-Z ]+$/)) {
+    alert("Name must contain only letters and spaces!");
+    return;
+  }
+
+  try {
+    // Log before attempting to fetch the queue data
+    console.log("Fetching queue data...");
+    const queueCollection = collection(db, "queue");
+    const queueSnapshot = await getDocs(queueCollection);
+    
+    // Log the retrieved queue data
+    const queueNumbers = queueSnapshot.docs.map(doc => {
+      console.log("Queue Number data:", doc.data());
+      return parseInt(doc.data().queueNumber.replace('D', ''), 10);
+    });
+    
+    // Generate the next queue number
+    const nextQueueNumber = Math.max(0, ...queueNumbers) + 1;
+    const queueNumber = `D${String(nextQueueNumber).padStart(4, "0")}`;
+    
+    // Log the generated queue number
+    console.log("Generated Queue Number:", queueNumber);
+    
+    // Save the document to Firestore
+    const patientRef = doc(queueCollection, id);
+    console.log("Saving to Firestore with data:", {
+      employeeID: id,
+      name: name,
+      email: email || null,
+      queueNumber: queueNumber,
+      status: "waiting",
+      timestamp: Timestamp.now(),
+    });
+    
+    await setDoc(patientRef, {
+      employeeID: id,
+      name: name,
+      email: email || null,
+      queueNumber: queueNumber,
+      status: "waiting",
+      timestamp: Timestamp.now(),
+    });
+    
+    // Log success and reset form
+    alert(`Your queue number is ${queueNumber}`);
+    setId("");
+    setName("");
+    setEmail("");
+    navigate("/queue-status");
+  } catch (error) {
+    // Log error details for debugging
+    console.error("Error registering user:", error);
+    alert("Error: Unable to register. Please try again.");
+  }
+};
   
 
   // JSX: Render the registration form UI
